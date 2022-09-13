@@ -1,16 +1,20 @@
-import logo from "./logo.svg";
-import "./App.css";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { getUserRequest } from "./actions/userActionTypes";
+import UsersList from "./components/UsersList";
 
-function App() {
-  const dispatch = useDispatch();
-  const currentAge = useSelector((state) => state.rootReducer);
+const App = ({ users, getUserRequest }) => {
+  console.log(users);
 
+  useEffect(() => {
+    getUserRequest();
+  }, [getUserRequest]);
   return (
-    <div className="App">
-      <h1> age-{currentAge}</h1>
+    <div>
+      <h1>Fetching the data using saga middleware</h1>
+      <UsersList users={users.items} />
     </div>
   );
-}
+};
 
-export default App;
+export default connect(({ users }) => ({ users }), { getUserRequest })(App);

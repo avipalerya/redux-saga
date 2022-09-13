@@ -4,9 +4,17 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import store from "./store/store";
+import axios from "axios";
+import { applyMiddleware, createStore } from "redux";
+import createSagaMiddleware from "@redux-saga/core";
+import reducers from "./reducers";
+import rootSaga from "./saga";
 
+axios.defaults.baseURL = "https://reqres.in/api";
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(reducers, applyMiddleware(sagaMiddleware));
 const root = ReactDOM.createRoot(document.getElementById("root"));
+sagaMiddleware.run(rootSaga);
 root.render(
   <React.StrictMode>
     <Provider store={store}>
